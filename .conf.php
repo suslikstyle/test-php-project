@@ -1,7 +1,7 @@
 <?php
-	$sql_host="localhost";
+	$sql_host="db";
 	$sql_user="user";
-	$sql_pswd="123";
+	$sql_pswd="password";
 	$sql_base="test_db";
 
 	session_start();

@@ -1,0 +1,80 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: #333;
+	color: #ccc;
+}
+
+a {
+	padding: 0 5px 0 10px;
+	text-decoration: none;
+	color: #333;
+}
+
+h1,h2,h3,h4,h5 {
+	margin: 10px 20px;
+}
+.info {
+	text-align: right;
+	color: #333;
+	text-shadow: 1px 1px 2px #555;
+}
+.container {
+	margin: 0 auto;
+	background-color: #ccc;
+	color: #333;
+	padding: 10px;
+	box-shadow: 1px 1px 3px black;
+	width: fit-content;
+	min-width: 330px;
+	border-radius: 4px;
+}
+.main-data {
+	width: 600px;
+	display: flex;
+	flex-direction: column;
+}
+.auth {
+	/*background-color: #aaa;*/
+	text-align: right;
+	margin-left: auto;
+}
+.data {
+	margin-top: 1em;
+}
+.data-list {
+	margin: 10px 30px;
+}
+.sigin-wrapper {
+	width: 250px;
+	margin: 30px auto;
+	padding: 1em;	
+}
+.item-wrapper {
+	display: flex;
+	width: 100%;
+	margin: 0 auto;
+}
+.item {
+	border-radius: 3px;
+	border: none;
+	outline:none;
+	width: 100%;
+	height: 1.6em;
+	margin: 2px auto;
+}
+.user-msg {
+	margin-top: 5px;
+	text-align: center;
+}
+.info-msg {
+	display: block;
+	color: #049304;
+}
+.error-msg {
+	display: block;
+	color: #f44;
+}

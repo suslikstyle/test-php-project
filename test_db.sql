@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- База данных: `test_db`
 --
+CREATE DATABASE IF NOT EXISTS `test_db`;
+USE `test_db`;
 
 -- --------------------------------------------------------
 
