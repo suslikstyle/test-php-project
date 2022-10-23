@@ -13,51 +13,77 @@
 </head>
 <body>
 	<div class="container">
-		<form action="/test-php-project/signin.php" method="POST">
-			<div class="item-wrapper">
-				<input class="item" type="text" name="login" placeholder="Введите ваш логин" value="<?php echo @$data['login'] ?>">
-			</div>
-			<div class="item-wrapper">
-				<input class="item" type="password" name="pass" placeholder="Введите пароль" value="<?php echo @$data['pass'] ?>">
-			</div>
-			<div class="item-wrapper">
-				<button class="item" type="submit" name="is_signin">Войти</button>
-			</div>
-		</form>
+		<?php
+      $form = '<form action="/test-php-project/signin.php" method="POST">
+          <div class="form-item">
+            <input type="text" name="login" placeholder="Введите ваш логин" value="'. @$data['login']. '">
+          </div>
+          <div class="form-item">
+            <input type="password" name="pass" placeholder="Введите пароль" value="'. @$data['pass']. '">
+          </div>
+          <div class="form-item">
+            <button type="submit" name="is_signin">Войти</button>
+          </div>
+        </form>';
+      
+      if (!isset($_SESSION['logged_user'])){
+        print($form);
+      }
+		?>
 
-		<div class="user-msg">
-			<?php
-				$data = $_POST;
-				if (isset($data['is_signin'])){
-					$err = array();
-					if ('' == $data['login']){
-						$err[] = "Введите логин";
-					}elseif ($db->check_login($data['login'])){
-						$hash = $db->get_password_hash($data['login']);
-						if (password_verify($data['pass'], $hash)){			
-							$userid = $db->get_id($data['login']);
-							if ($userid > 0){
-								$_SESSION['logged_user'] = $userid;
-								print('<span class="info-msg">Приветствуем Вас '.$db->get_name_by_id($userid).'</span>');
-								print('<a id="go-main" href="/test-php-project/">на главную</a>');
-								print('<script type="text/javascript">setTimeout(()=>{document.getElementById("go-main").click()},3000)</script>');
-							} else {
-								print('<span class="error-msg">Возникла непредвиденная ситуация</span>');
-							}
-						} else {
-							$err[] = "Пароль не верный";
-						}
-					} else {
-						$err[] = "Пользователь с таким логином не найден!";
-					}
-					// var_dump($err);
-					if(!empty($err)){
-						print('<span class="error-msg">'.array_shift($err).'</span>');
-					}
-				}
-			?>
+    <div class="user-msg">
+      <?php
+        function helloText(DBConnection $db = null){
+          if (is_null($db) || !isset($_SESSION['logged_user'])) return;
+
+          $username = $db->get_name_by_id($_SESSION['logged_user']);
+          print('<span class="info-msg">Приветствуем Вас '. $username .'</span>
+            <a id="go-main" class="back" href="/test-php-project/">на главную</a>
+            <script type="text/javascript">
+              const link = document.getElementById("go-main")
+              const animateNext = () => {
+                link.text += "."
+                if (link.text.endsWith("...")) document.getElementById("go-main").click()
+              }
+              const animateAuto = () => {
+                animateNext()
+                setTimeout(animateAuto, 800);
+              }
+              setTimeout(animateAuto, 800);
+            </script>'
+          );
+        }
+
+        $data = $_POST;
+        if (isset($data['is_signin'])){
+          $err = array();
+          if ('' == $data['login']){
+            $err[] = "Введите логин";
+          } elseif ($db->check_login($data['login'])){
+            $hash = $db->get_password_hash($data['login']);
+            if (password_verify($data['pass'], $hash)){			
+              $userid = $db->get_id($data['login']);
+              if ($userid > 0){
+                $_SESSION['logged_user'] = $userid;
+                helloText($db);
+              } else {
+                print('<span class="error-msg">Возникла непредвиденная ситуация</span>');
+              }
+            } else {
+              $err[] = "Пароль не верный";
+            }
+          } else {
+            $err[] = "Пользователь с таким логином не найден!";
+          }
+          // var_dump($err);
+          if(!empty($err)){
+            print('<span class="error-msg">'.array_shift($err).'</span>');
+          }
+        } else {
+          helloText($db);
+        }
+      ?>
 		</div>
 	</div>
-		
 </body>
 </html>

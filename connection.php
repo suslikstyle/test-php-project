@@ -69,12 +69,14 @@ class DBConnection {
 		return 0;
 	}
 	public function get_name_by_id($id){
+		// Такое может быть что имени не будет, тогда возвращаем логин.
 		if(!$this->db_conn) return '';
-		$recs = $this->db_conn->query("SELECT `name` FROM `users` WHERE `id`='".$id."'")->fetch_assoc();
+		$recs = $this->db_conn->query("SELECT `login`, `name` FROM `users` WHERE `id`='".$id."'")->fetch_assoc();
 		if (!empty($recs)){
+			if (empty($recs['name']) || $recs['name'] == '') return $recs['login'];
 			return $recs['name'];
 		}
-		return '';
+		return '#username';
 	}
 
 	public function new_name_by_id($id, $name, $surname, $lastame){
